@@ -21,7 +21,7 @@ Information about building and installing and using OrangeFS can be found in:
 docs.orangefs.com
 
 Information about the current state of the project can be found in:
-http://orangefs.org
+https://orangefs.org
 
 Documentation of interest to developers can be found in doc/design and 
 doc/coding, although it may not be in sync with the current code.
