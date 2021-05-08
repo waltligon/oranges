@@ -25,7 +25,11 @@
  */
 
 int getdents(unsigned int, struct dirent *, unsigned int);
+
+#if __GLIBC__ <=2 && __GLIBC_MINOR__ < 30 //this might need to be changed in future versions of glibc
 int getdents64(unsigned int, struct dirent64 *, unsigned int);
+#endif
+
 int flock(int, int);
 int fadvise64(int, off64_t, off64_t, int);
 
@@ -1493,7 +1497,7 @@ int getdents(unsigned int fd, struct dirent *dirp, unsigned int size)
     }
     return rc;
 }
-
+#if __GLIBC__ <=2 && __GLIBC_MINOR__ < 30
 int getdents64(unsigned int fd, struct dirent64 *dirp, unsigned int size)
 {
     int rc = 0;
@@ -1517,6 +1521,7 @@ int getdents64(unsigned int fd, struct dirent64 *dirp, unsigned int size)
     }
     return rc;
 }
+#endif
 
 /* linux discourages using readdir system calls, so for now
  * we will leave them out - there are stdio calls that can

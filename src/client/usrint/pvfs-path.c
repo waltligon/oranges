@@ -263,13 +263,17 @@ char *PVFS_expand_path(const char *path, int skip_last_lookup)
         else
         {
             /* this is for non PVFS space */
+            #ifdef SYS_readlink
             n = syscall(SYS_readlink,
+            #else
+            n = syscall(SYS_readlinkat, AT_FDCWD,
+            #endif
                         Ppath->expanded_path,
                         link_path,
                         PVFS_PATH_MAX);
             if (n < 0)
             {
-                struct stat sbuf;
+                
                 if (errno != EINVAL)
                 {
                     /* an error so we bail out */
@@ -280,9 +284,20 @@ char *PVFS_expand_path(const char *path, int skip_last_lookup)
                 /* else not a sym link 
                  * check to see if it is a valid object
                  */
+                #ifdef SYS_stat
+                struct stat sbuf;
                 n = syscall(SYS_stat,
                             Ppath->expanded_path,
                             &sbuf);
+                #else
+                struct statx sbuf;
+                n = syscall(SYS_statx, AT_FDCWD
+                            Ppath->expanded_path,
+                            AT_STATX_SYNC_AS_STAT,
+                            STATX_BASIC_STATS,
+                            &sbuf);
+                #endif
+
                 if (n < 0)
                 {
                     /* Failed to look this up so this is either an

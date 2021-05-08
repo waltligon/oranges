@@ -279,7 +279,11 @@ static int my_glibc_mknodat(int dirfd, const char *path, mode_t mode, dev_t dev)
 
 static int my_glibc_getdents(u_int fd, struct dirent *dirp, u_int count)
 {
+    #ifdef SYS_getdents
     return syscall(SYS_getdents, fd, dirp, count);
+    #else
+    return syscall(SYS_getdents64, fd, dirp, count);
+    #endif
 }
 
 static int my_glibc_getdents64(u_int fd, struct dirent64 *dirp, u_int count)

@@ -3073,7 +3073,10 @@ struct dirent *readdir (DIR *dir)
  */
 
 int getdents(int fd, struct dirent *buf, size_t size);
+
+#if __GLIBC__ <=2 && __GLIBC_MINOR__ < 30
 int getdents64(int fd, struct dirent64 *buf, size_t size);
+#endif
 
 struct dirent64 *readdir64 (DIR *dir)
 {

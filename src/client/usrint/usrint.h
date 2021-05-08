@@ -146,6 +146,30 @@
 //#include <libio.h>
 //#undef _GLIBCPP_USE_WCHAR_T
 #include <stdio.h>
+#ifndef _IO_FILE
+#include <bits/types/__FILE.h>
+#define _IO_FILE __FILE
+
+//copied from the depracated code
+#define _IO_MAGIC_MASK 0xFFFF0000
+#define _IO_MAGIC 0xFBAD0000
+#define _IO_NO_WRITES 8
+#define _IO_NO_READS 4
+#define _IO_USER_BUF 1
+#define _IO_CURRENTLY_PUTTING 0x800
+#define _IO_DELETE_DONT_CLOSE 0x40
+struct _IO_marker {
+  struct _IO_marker *_next;
+  struct _IO_FILE *_sbuf;
+  int _pos;
+};
+
+//source: http://man7.org/linux/man-pages/man3/setbuf.3.html
+//these have the same value as before depracation of libio.h
+#define _IO_UNBUFFERED _IONBF
+#define _IO_LINE_BUF _IOLBF
+#endif
+
 #include <utime.h>
 
 #ifdef HAVE_UNISTD_H

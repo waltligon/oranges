@@ -9,7 +9,11 @@
 #include <fts.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <attr/xattr.h>
+#if __has_include("attr/xattr.h")
+    #include <attr/xattr.h>
+#else
+    #include <sys/xattr.h>
+#endif
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
