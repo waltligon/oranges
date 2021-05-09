@@ -1,5 +1,6 @@
 AC_DEFUN([AX_GETGROUPLIST],
 [
+	AC_REQUIRE([AC_EGREP_HEADER])
 	AC_MSG_CHECKING(for getgrouplist in distro)
 	dnl if this test passes, the distro does have it
 	dnl if this test fails, the distro does not have it
